@@ -61,18 +61,18 @@ SELECT f.title, s.store_id
 FROM film f
 JOIN inventory i ON f.film_id = i.film_id
 JOIN store s ON i.store_id = s.store_id
-WHERE f.title = "Academy Dinosaur" AND s.store_id = "1"
+WHERE f.title = "Academy Dinosaur" AND s.store_id = "1";
 
 -- Provide a list of all distinct film titles, along with their availability status in the inventory.
 -- Include a column indicating whether each title is 'Available' or 'NOT available.'
 -- Note that there are 42 titles that are not in the inventory, and this information can be obtained using a CASE statement combined with IFNULL."
 
-SELECT f.title 
+SELECT
+	f.title,
 	CASE 
-		WHEN COUNT(r.inventory_id) = 0 THEN "Available"
+		WHEN COUNT(i.inventory_id) > 0 THEN "Available"
         ELSE "Not Available"
 	END AS availability_status
 FROM film f
 LEFT JOIN inventory i ON f.film_id = i.film_id
-LEFT JOIN rental r ON i.inventory_id = r.inventory_id
 GROUP BY f.title;
